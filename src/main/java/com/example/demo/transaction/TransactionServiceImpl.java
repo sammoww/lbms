@@ -2,6 +2,8 @@ package com.example.demo.transaction;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepo transactionRepo;
@@ -36,4 +38,11 @@ public class TransactionServiceImpl implements TransactionService {
     public void deleteRecord(int id) {
         transactionRepo.deleteById(id);
     }
+
+    @Override
+    public List<Transaction> getAllRecords() {
+        return transactionRepo.findAll();
+    }
+
+
 }

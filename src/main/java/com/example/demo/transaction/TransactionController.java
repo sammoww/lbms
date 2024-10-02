@@ -4,6 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/transaction")
 public class TransactionController {
@@ -36,4 +38,8 @@ public class TransactionController {
         return transactionService.updateRecord(id,transaction);
     }
 
+    @GetMapping("/getTransactions")
+    public List<Transaction> getTransactions(){
+        return transactionService.getAllRecords();
+    }
 }

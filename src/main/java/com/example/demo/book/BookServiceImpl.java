@@ -2,7 +2,9 @@ package com.example.demo.book;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class BookServiceImpl implements BookService{
@@ -32,5 +34,10 @@ public class BookServiceImpl implements BookService{
     @Override
     public void deleteBook(int isbn) {
         bookRepo.deleteById(isbn);
+    }
+
+    @Override
+    public List<Book> getAllBooks() {
+        return bookRepo.findAll();
     }
 }

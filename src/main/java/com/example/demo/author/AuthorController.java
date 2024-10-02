@@ -2,6 +2,8 @@ package com.example.demo.author;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/author")
 public class AuthorController {
@@ -14,6 +16,11 @@ public class AuthorController {
     @GetMapping("/getAuthor/{id}")
     public Author readAuthor(@PathVariable Integer id){
         return authorService.readAuthor(id);
+    }
+
+    @GetMapping("/getAuthors")
+    public List<Author> getAuthors(){
+        return authorService.readAuthors();
     }
 
     @PutMapping("/createAuthor")

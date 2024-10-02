@@ -2,6 +2,8 @@ package com.example.demo.book;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/book")
 public class BookController {
@@ -14,6 +16,11 @@ public class BookController {
     @GetMapping("/getBook/{isbn}")
     public Book getBooksByIsbn(@PathVariable int isbn){
        return bookService.getBookByIsbn(isbn).orElseThrow();
+    }
+
+    @GetMapping("/getBooks")
+    public List<Book> getAllBooks(){
+        return bookService.getAllBooks();
     }
 
     @PutMapping("/update/{isbn}")
