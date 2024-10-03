@@ -1,5 +1,6 @@
 package com.example.demo.book;
 
+import com.example.demo.exception.EntityAlreadyExistsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class BookController {
 
     @GetMapping("/getBook/{isbn}")
     public Book getBooksByIsbn(@PathVariable int isbn){
-       return bookService.getBookByIsbn(isbn).orElseThrow();
+       return bookService.getBookByIsbn(isbn);
     }
 
     @GetMapping("/getBooks")

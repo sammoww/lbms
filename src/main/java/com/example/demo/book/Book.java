@@ -17,6 +17,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(unique = true)
     private Integer isbn;
     private String BookName;
 
