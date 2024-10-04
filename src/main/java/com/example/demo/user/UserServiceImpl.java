@@ -1,7 +1,11 @@
 package com.example.demo.user;
 
+import com.example.demo.exception.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -12,14 +16,26 @@ public class UserServiceImpl implements UserService {
     UserServiceImpl(UserRepo userRepo){this.userRepo = userRepo;}
 
     @Override
-    public Optional<User> getUserById(int id) {
-        return userRepo.findById(id);
-
+    public User getUserById(int id) {
+        return userRepo.findById(id).orElseThrow(()->new EntityNotFoundException("User with id "+ id + " not found." ));
     }
 
     @Override
-    public User saveUser(User user) {
-        return userRepo.save(user);
+    public ResponseEntity<String> saveUser(User user) {
+        User userResponseBody = userRepo.save(user);
+
+        if (userRepo.existsByEmail(userResponseBody.getEmail())){
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("Duplicate email. Please use another email");
+        }
+        String responseMessage = "The user with following details has been saved \n" +
+                                    "UserId: " + userResponseBody.getId() + "\n" +
+                                    "Username: " + userResponseBody.getName() + "\n" +
+                                    "email: " + userResponseBody.getEmail();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseMessage);
     }
 
     @Override
@@ -35,4 +51,17 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDetails.getEmail());
         return userRepo.save(user);
     }
+
+    @Override
+    public List<User> getUsers() {
+        return userRepo.findAll();
+    }
+
+    public ResponseEntity<String> getResponse() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("wow", "A-OK")
+                .body("Test successful");
+    }
+
 }

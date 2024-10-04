@@ -1,13 +1,19 @@
 package com.example.demo.user;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    Optional<User> getUserById(int id);
+    User getUserById(int id);
 
-    User saveUser(User user);
+    ResponseEntity<String> saveUser(User user);
 
     void deleteUser(int id);
 
-    User updateUser(int id,User user);
+    User updateUser(int id, User user);
 
+    List<User> getUsers();
+
+    ResponseEntity<String> getResponse();
 }

@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -15,13 +16,13 @@ public class UserController {
     UserController(UserService userService){userServ = userService;}
 
     @GetMapping("/getUserById/{id}")
-    public Optional<User> getUserById(@PathVariable int id){
+    public User getUserById(@PathVariable int id){
         return userServ.getUserById(id);
     }
 
     @PostMapping("/save")
-    public ResponseEntity<User> createUser(@RequestBody User user){
-        return  new ResponseEntity<>(userServ.saveUser(user), HttpStatus.OK);
+    public ResponseEntity<String> saveUser(@RequestBody User user){
+        return userServ.saveUser(user);
     }
 
     @PutMapping("/update/{id}")
@@ -32,5 +33,15 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public void deleteUser(@PathVariable Integer id){
         userServ.deleteUser(id);
+    }
+
+    @GetMapping("/getUsers")
+    public List<User> getUsers(){
+        return userServ.getUsers();
+    }
+
+    @GetMapping("/getResponse")
+    public ResponseEntity<String> getResponse(){
+        return userServ.getResponse();
     }
 }
