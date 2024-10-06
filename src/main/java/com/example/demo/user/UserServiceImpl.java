@@ -39,9 +39,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(int id) {
-        userRepo.deleteById(id);
-
+    public ResponseEntity<String> deleteUser(int id) {
+        if(userRepo.existsById(id)) {
+            userRepo.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body("User with id "+id+" has been deleted.");
+        }
+        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id "+ id +" does not exist");
     }
 
     @Override

@@ -9,7 +9,7 @@ public interface UserService {
 
     ResponseEntity<String> saveUser(User user);
 
-    void deleteUser(int id);
+    ResponseEntity<String> deleteUser(int id);
 
     User updateUser(int id, User user);
 
