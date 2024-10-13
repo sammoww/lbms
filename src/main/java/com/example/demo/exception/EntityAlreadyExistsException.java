@@ -7,7 +7,7 @@ public class EntityAlreadyExistsException extends RuntimeException{
 
     public EntityAlreadyExistsException(String msg){
         super(msg);
-        this.message = msg;
+        this.message = msg; //useful for retrieving the message.
     }
 
 }

@@ -22,13 +22,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<String> saveUser(User user) {
-        User userResponseBody = userRepo.save(user);
 
-        if (userRepo.existsByEmail(userResponseBody.getEmail())){
+        if (userRepo.existsByEmail(user.getEmail())){
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body("Duplicate email. Please use another email");
         }
+
+        User userResponseBody = userRepo.save(user);
+
         String responseMessage = "The user with following details has been saved \n" +
                                     "UserId: " + userResponseBody.getId() + "\n" +
                                     "Username: " + userResponseBody.getName() + "\n" +

@@ -41,8 +41,12 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public void deleteBook(int isbn) {
-        bookRepo.deleteById(isbn);
+    public Boolean deleteBook(int isbn) {
+        if(bookRepo.existsByIsbn(isbn)) {
+            bookRepo.deleteById(isbn);
+            return true;
+        } else
+            return false;
     }
 
     @Override

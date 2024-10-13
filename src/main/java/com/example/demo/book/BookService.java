@@ -10,7 +10,7 @@ public interface BookService {
 
     Book updateBook(int isbn, Book bookDetails);
 
-    void deleteBook(int isbn);
+    Boolean deleteBook(int isbn);
 
     List<Book> getAllBooks();
 }

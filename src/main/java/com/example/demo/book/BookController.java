@@ -1,6 +1,9 @@
 package com.example.demo.book;
 
 import com.example.demo.exception.EntityAlreadyExistsException;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,8 +18,8 @@ public class BookController {
     }
 
     @GetMapping("/getBook/{isbn}")
-    public Book getBooksByIsbn(@PathVariable int isbn){
-       return bookService.getBookByIsbn(isbn);
+    public Book getBookByIsbn(@PathVariable int isbn){
+        return bookService.getBookByIsbn(isbn);
     }
 
     @GetMapping("/getBooks")
@@ -30,13 +33,25 @@ public class BookController {
     }
 
     @PostMapping("/add")
-    Book addBook(@RequestBody Book bookDetails){
-        return bookService.addBook(bookDetails);
+    public ResponseEntity<String> addBook(@RequestBody Book bookDetails){
+        Book addedBook = bookService.addBook(bookDetails);
+        String responseMessage = "The book with isbn "+ addedBook.getIsbn()+ " has been added.";
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseMessage);
     }
 
     @DeleteMapping("/delete/{isbn}")
-    void deleteBook(@PathVariable int isbn){
-        bookService.deleteBook(isbn);
+    ResponseEntity<String> deleteBook(@PathVariable int isbn){
+        Boolean BookExistByIsbn = bookService.deleteBook(isbn);
+        if(BookExistByIsbn){
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body("Message: Book with isbn " + isbn + " has been successfully deleted" );
+        }
+        else{
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Message: Book with isbn "+isbn+" not found!");
+        }
     }
 
 }
