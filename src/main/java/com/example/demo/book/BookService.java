@@ -1,5 +1,7 @@
 package com.example.demo.book;
 
+import org.springframework.http.ResponseEntity;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -8,9 +10,9 @@ public interface BookService {
 
     Book addBook(Book book);
 
-    Book updateBook(int isbn, Book bookDetails);
+    ResponseEntity<String> updateBook(int isbn, Book bookDetails);
 
-    Boolean deleteBook(int isbn);
+    ResponseEntity<String> deleteBook(int isbn);
 
     List<Book> getAllBooks();
 }

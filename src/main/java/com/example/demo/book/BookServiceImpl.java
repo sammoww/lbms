@@ -2,6 +2,9 @@ package com.example.demo.book;
 
 import com.example.demo.exception.EntityAlreadyExistsException;
 import com.example.demo.exception.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,21 +35,24 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public Book updateBook(int isbn, Book bookDetails) {
-        Book book = bookRepo.findById(isbn)
-                .orElseThrow(()-> new EntityNotFoundException("Book not found "));
+    public ResponseEntity<String> updateBook(int isbn, Book bookDetails) {
+        if (!bookRepo.existsByIsbn(isbn)) throw new EntityNotFoundException("Book not found ");
+        Book book = bookRepo.findByIsbn(isbn);
         book.setBookName(bookDetails.getBookName());
         book.setAuthor(bookDetails.getAuthor());
-        return bookRepo.save(book);
+        return ResponseEntity.status(HttpStatus.OK).body("Book has been updated.\n Updated Book's Details:\n" + book.toString());
     }
 
     @Override
-    public Boolean deleteBook(int isbn) {
-        if(bookRepo.existsByIsbn(isbn)) {
+    public ResponseEntity<String> deleteBook(int isbn) {
+        if(!bookRepo.existsByIsbn(isbn)) {
+            throw new EntityNotFoundException("Book with isbn: "+isbn+" not found.");
+        }else {
             bookRepo.deleteById(isbn);
-            return true;
-        } else
-            return false;
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body("Message: Book with isbn " + isbn + " has been successfully deleted" );
+        }
     }
 
     @Override

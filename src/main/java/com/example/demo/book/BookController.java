@@ -28,7 +28,7 @@ public class BookController {
     }
 
     @PutMapping("/update/{isbn}")
-    Book updateBook(@PathVariable int isbn, @RequestBody Book bookDetails){
+    ResponseEntity<String> updateBook(@PathVariable int isbn, @RequestBody Book bookDetails){
         return bookService.updateBook(isbn, bookDetails);
     }
 
@@ -40,18 +40,8 @@ public class BookController {
     }
 
     @DeleteMapping("/delete/{isbn}")
-    ResponseEntity<String> deleteBook(@PathVariable int isbn){
-        Boolean BookExistByIsbn = bookService.deleteBook(isbn);
-        if(BookExistByIsbn){
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body("Message: Book with isbn " + isbn + " has been successfully deleted" );
-        }
-        else{
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Message: Book with isbn "+isbn+" not found!");
-        }
+    public ResponseEntity<String> deleteBook(@PathVariable int isbn) {
+        return bookService.deleteBook(isbn);
     }
 
 }
