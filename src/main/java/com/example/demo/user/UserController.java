@@ -40,8 +40,4 @@ public class UserController {
         return userServ.getUsers();
     }
 
-    @GetMapping("/getResponse")
-    public ResponseEntity<String> getResponse(){
-        return userServ.getResponse();
-    }
 }

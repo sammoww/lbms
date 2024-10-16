@@ -42,16 +42,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<String> deleteUser(int id) {
-        if(userRepo.existsById(id)) {
+        User user = userRepo.findById(id).orElseThrow(()->new EntityNotFoundException("User with Id: "+id+" not found"));
             userRepo.deleteById(id);
-            return ResponseEntity.status(HttpStatus.OK).body("User with id "+id+" has been deleted.");
-        }
-        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id "+ id +" does not exist");
+            return ResponseEntity.status(HttpStatus.OK).body("Deleted user \nid: "+id+ "\n" +
+                                                                "name: "+ user.getName()+ "\n" +
+                    "email: "+ user.getEmail());
     }
 
     @Override
     public User updateUser(int id, User userDetails) {
-        User user = userRepo.findById(id).orElseThrow(); //use Elsethrow(). We can use optional but we cannot use setters or getters with optional.
+        User user = userRepo.findById(id).orElseThrow(()->new EntityNotFoundException("User with id: "+id+" not found.")); //use Elsethrow(). We can use optional but we cannot use setters or getters with optional.
         user.setName(userDetails.getName());
         user.setEmail(userDetails.getEmail());
         return userRepo.save(user);
@@ -62,11 +62,5 @@ public class UserServiceImpl implements UserService {
         return userRepo.findAll();
     }
 
-    public ResponseEntity<String> getResponse() {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .header("wow", "A-OK")
-                .body("Test successful");
-    }
 
 }

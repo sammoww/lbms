@@ -15,5 +15,4 @@ public interface UserService {
 
     List<User> getUsers();
 
-    ResponseEntity<String> getResponse();
 }
