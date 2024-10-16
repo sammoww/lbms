@@ -1,5 +1,6 @@
 package com.example.demo.user;
 
+import com.example.demo.exception.EntityAlreadyExistsException;
 import com.example.demo.exception.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +25,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> saveUser(User user) {
 
         if (userRepo.existsByEmail(user.getEmail())){
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .body("Duplicate email. Please use another email");
+           throw  new EntityAlreadyExistsException("Email id: " + user.getEmail() + " already exists");
         }
 
         User userResponseBody = userRepo.save(user);
